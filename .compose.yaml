@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      dockerfile: ./Dockerfile
+    env_file: ./.env
+    ports:
+      - 80:3333
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+    networks:
+      - app
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - sql-data:/var/lib/psql
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: exam
+      POSTGRES_USER: postgres
+      POSTGRES_DB: exam
+    networks:
+      - app
+
+networks:
+  app:
+volumes:
+  sql-data:
+
